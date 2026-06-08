@@ -25,6 +25,7 @@ import ToolsModalContent from './contents/ToolsModalContent';
 import WebuiModalContent from './contents/WebuiModalContent';
 import { SettingsViewModeProvider } from './settingsViewContext';
 import { LEGACY_ANCHOR_REMAP } from '@/renderer/pages/settings/components/SettingsSider';
+import './settings-modal.css';
 
 // ==================== 常量定义 / Constants ====================
 
@@ -360,15 +361,18 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ visible, onCancel, defaul
 
   // 桌面端菜单（侧边栏）/ Desktop menu (sidebar)
   const desktopMenu = (
-    <AionScrollArea className='flex-shrink-0 b-color-border-2 scrollbar-hide' style={{ width: `${SIDEBAR_WIDTH}px` }}>
-      <div className='flex flex-col gap-2px'>
+    <AionScrollArea
+      className='settings-modal-sider flex-shrink-0 b-color-border-2 scrollbar-hide'
+      style={{ width: `${SIDEBAR_WIDTH}px` }}
+    >
+      <div className='settings-modal-sider__items flex flex-col gap-2px'>
         {menuItems.map((item) => (
           <div
             key={item.key}
             className={classNames(
-              'flex items-center px-14px py-10px rd-8px cursor-pointer transition-all duration-150 select-none',
+              'settings-modal-sider__item flex items-center px-14px py-10px rd-8px cursor-pointer transition-all duration-150 select-none',
               {
-                'bg-aou-2 text-t-primary': activeTab === item.key,
+                'settings-modal-sider__item--active bg-aou-2 text-t-primary': activeTab === item.key,
                 'text-t-secondary hover:bg-fill-1': activeTab !== item.key,
               }
             )}
@@ -408,7 +412,10 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ visible, onCancel, defaul
           {isMobile ? mobileMenu : desktopMenu}
 
           <AionScrollArea
-            className={classNames('flex-1 min-h-0', isMobile ? 'overflow-y-auto' : 'flex flex-col pl-24px gap-16px')}
+            className={classNames(
+              'settings-modal-content flex-1 min-h-0',
+              isMobile ? 'overflow-y-auto' : 'flex flex-col pl-24px gap-16px'
+            )}
           >
             {renderBuiltinContent()}
             {renderExtensionTabs()}

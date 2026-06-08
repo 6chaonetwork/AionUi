@@ -1,0 +1,174 @@
+.cron-page-shell {
+  position: relative;
+  isolation: isolate;
+  background:
+    radial-gradient(
+      circle at 50% -16%,
+      color-mix(in srgb, var(--color-primary-2) 24%, transparent) 0%,
+      transparent 34%
+    ),
+    linear-gradient(180deg, color-mix(in srgb, var(--bg-2) 68%, transparent) 0%, transparent 38%), var(--bg-1);
+}
+
+.cron-page-shell::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      90deg,
+      transparent 0%,
+      color-mix(in srgb, var(--border-base) 22%, transparent) 50%,
+      transparent 100%
+    ),
+    radial-gradient(circle at 88% 12%, color-mix(in srgb, var(--success-3) 18%, transparent) 0%, transparent 28%);
+  mask-image: linear-gradient(180deg, black 0%, transparent 72%);
+}
+
+.cron-page-content,
+.cron-detail-page {
+  position: relative;
+}
+
+.cron-page-hero {
+  border-radius: 16px;
+  padding: 2px 2px 6px;
+}
+
+.cron-awake-card,
+.cron-state-card,
+.cron-task-card,
+.cron-detail-panel,
+.cron-detail-sidebar {
+  border-color: color-mix(in srgb, var(--border-base) 74%, transparent) !important;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--bg-base) 42%, transparent) 0%, transparent 46%),
+    color-mix(in srgb, var(--fill-1) 78%, var(--bg-1)) !important;
+  box-shadow:
+    0 18px 48px color-mix(in srgb, var(--color-text-1) 7%, transparent),
+    inset 0 1px 0 color-mix(in srgb, var(--bg-base) 68%, transparent);
+}
+
+.cron-awake-card {
+  backdrop-filter: blur(14px);
+}
+
+.cron-task-card {
+  position: relative;
+  min-height: 162px;
+  overflow: hidden;
+  transform: translateY(0);
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.18s ease,
+    background-color 0.18s ease;
+}
+
+.cron-task-card::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--color-primary-6) 58%, transparent),
+    color-mix(in srgb, var(--success-6) 42%, transparent)
+  );
+  opacity: 0;
+  transition: opacity 0.18s ease;
+}
+
+.cron-task-card:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--color-primary-6) 28%, var(--border-base)) !important;
+  box-shadow:
+    0 22px 54px color-mix(in srgb, var(--color-text-1) 10%, transparent),
+    inset 0 1px 0 color-mix(in srgb, var(--bg-base) 72%, transparent);
+}
+
+.cron-task-card:hover::before {
+  opacity: 1;
+}
+
+.cron-task-card__meta {
+  border-radius: 999px;
+  padding: 3px 7px 3px 4px;
+  background: color-mix(in srgb, var(--bg-base) 54%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--border-base) 42%, transparent);
+}
+
+.cron-task-card__agent {
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--fill-2) 82%, var(--bg-1));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--border-base) 46%, transparent);
+}
+
+.cron-detail-hero {
+  border-radius: 18px;
+  padding: 20px;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--bg-base) 36%, transparent) 0%, transparent 52%),
+    color-mix(in srgb, var(--fill-1) 56%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border-base) 60%, transparent);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--bg-base) 68%, transparent);
+}
+
+.cron-detail-panel,
+.cron-detail-sidebar {
+  border: 1px solid color-mix(in srgb, var(--border-base) 72%, transparent);
+  border-radius: 16px;
+  padding: 18px;
+}
+
+.cron-detail-sidebar {
+  position: sticky;
+  top: 24px;
+}
+
+.cron-detail-sidebar__section + .cron-detail-sidebar__section {
+  padding-top: 18px;
+  border-top: 1px solid color-mix(in srgb, var(--border-base) 58%, transparent);
+}
+
+.cron-detail-value-box {
+  border-color: color-mix(in srgb, var(--border-base) 70%, transparent) !important;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--bg-base) 34%, transparent) 0%, transparent 56%),
+    color-mix(in srgb, var(--fill-1) 78%, var(--bg-1)) !important;
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--bg-base) 58%, transparent);
+}
+
+.cron-divider {
+  background: color-mix(in srgb, var(--border-base) 68%, transparent) !important;
+}
+
+@media (max-width: 767px) {
+  .cron-page-shell::before {
+    display: none;
+  }
+
+  .cron-detail-hero,
+  .cron-detail-panel,
+  .cron-detail-sidebar {
+    border-radius: 14px;
+    padding: 16px;
+  }
+
+  .cron-detail-sidebar {
+    position: static;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cron-task-card,
+  .cron-task-card::before {
+    transition: none;
+  }
+
+  .cron-task-card:hover {
+    transform: none;
+  }
+}

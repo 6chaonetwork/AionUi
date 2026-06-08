@@ -22,6 +22,7 @@ import {
 } from './agentSelectUtils';
 import type { TeamAgentOption } from './agentSelectUtils';
 import { resolveDefaultTeamAgentModel } from './teamCreateModelResolver';
+import './TeamCreateModal.css';
 
 // [E2E SYNC] 修改此组件的 DOM 结构（class、标题、关闭按钮等）时，
 // 必须同步更新 tests/e2e/cases/teams/team-create.e2e.ts 和 team-whitelist.e2e.ts 中的 selector，
@@ -40,8 +41,8 @@ const AgentRadioRow: React.FC<{
   onClick: () => void;
 }> = ({ agent, isSelected, onClick }) => (
   <div
-    className={`flex cursor-pointer items-center gap-12px rounded-8px px-12px py-9px transition-colors ${
-      isSelected ? 'bg-aou-1' : 'hover:bg-fill-2'
+    className={`team-create-agent-option flex cursor-pointer items-center gap-12px rounded-8px px-12px py-9px transition-colors ${
+      isSelected ? 'team-create-agent-option--selected bg-aou-1' : 'hover:bg-fill-2'
     }`}
     style={isSelected ? { boxShadow: 'inset 0 0 0 1px var(--aou-6)' } : undefined}
     onClick={onClick}

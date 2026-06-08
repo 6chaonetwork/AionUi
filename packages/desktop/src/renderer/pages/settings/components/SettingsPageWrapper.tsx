@@ -157,6 +157,7 @@ const SettingsPageWrapper: React.FC<SettingsPageWrapperProps> = ({ children, cla
   return (
     <SettingsViewModeProvider value='page'>
       <div className={containerClass}>
+        <div className='settings-page-atmosphere' aria-hidden='true' />
         {isMobile && (
           <div className='settings-mobile-top-nav'>
             {menuItems.map((item) => {
@@ -179,7 +180,7 @@ const SettingsPageWrapper: React.FC<SettingsPageWrapperProps> = ({ children, cla
             })}
           </div>
         )}
-        <div className={contentClass}>{children}</div>
+        <div className={classNames(contentClass, 'settings-page-content--transition')}>{children}</div>
       </div>
     </SettingsViewModeProvider>
   );

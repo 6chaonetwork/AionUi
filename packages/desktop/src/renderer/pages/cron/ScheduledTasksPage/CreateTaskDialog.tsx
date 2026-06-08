@@ -25,6 +25,7 @@ import { WorkspaceFolderSelect } from '@renderer/components/workspace';
 import { DETECTED_AGENTS_SWR_KEY, fetchDetectedAgents, type AgentMetadata } from '@renderer/utils/model/agentTypes';
 import { createCronSchedule } from '@renderer/pages/cron/cronUtils';
 import { getConversationCreateErrorMessage } from '@renderer/pages/conversation/utils/conversationCreateError';
+import './CreateTaskDialog.css';
 
 const FormItem = Form.Item;
 const TextArea = Input.TextArea;
@@ -501,7 +502,7 @@ const CreateTaskDialog: React.FC<CreateTaskDialogProps> = ({
       confirmLoading={submitting}
       okText={t('cron.page.save')}
       cancelText={t('cron.page.cancel')}
-      className='w-[min(560px,calc(100vw-32px))] max-w-560px rd-16px'
+      className='cron-task-dialog w-[min(560px,calc(100vw-32px))] max-w-560px rd-16px'
       unmountOnExit
     >
       <div className='overflow-y-auto px-24px pb-16px pr-18px max-h-[min(68vh,640px)]'>

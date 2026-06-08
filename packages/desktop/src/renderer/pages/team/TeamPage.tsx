@@ -22,6 +22,7 @@ import { TeamTabsProvider, useTeamTabs } from './hooks/TeamTabsContext';
 import { TeamPermissionProvider } from './hooks/TeamPermissionContext';
 import { useTeamSession } from './hooks/useTeamSession';
 import { getConversationOrNull } from '@/renderer/pages/conversation/utils/conversationCache';
+import './TeamPage.css';
 
 type Props = {
   team: TTeam;
@@ -73,7 +74,7 @@ const AgentChatSlot: React.FC<{
 
   return (
     <div
-      className='flex flex-col h-full'
+      className={`team-agent-slot flex flex-col h-full ${isLeader ? 'team-agent-slot--leader' : ''}`}
       style={
         isLeader
           ? {
@@ -84,7 +85,7 @@ const AgentChatSlot: React.FC<{
       }
     >
       <div
-        className='flex items-center justify-between gap-8px px-12px h-40px shrink-0 border-b border-solid border-[color:var(--border-base)] relative z-10'
+        className='team-agent-slot__header flex items-center justify-between gap-8px px-12px h-40px shrink-0 border-b border-solid border-[color:var(--border-base)] relative z-10'
         style={
           isLeader
             ? { background: 'color-mix(in srgb, var(--color-primary-6) 8%, var(--color-bg-2))' }
@@ -122,21 +123,21 @@ const AgentChatSlot: React.FC<{
           )}
           {!isLeader && onRemove && (
             <div
-              className='shrink-0 cursor-pointer hover:bg-[var(--fill-3)] p-4px rd-4px text-[color:var(--color-text-3)] hover:text-[color:var(--color-danger-6)] transition-colors'
+              className='team-agent-slot__icon-button shrink-0 cursor-pointer hover:bg-[var(--fill-3)] p-4px rd-4px text-[color:var(--color-text-3)] hover:text-[color:var(--color-danger-6)] transition-colors'
               onClick={onRemove}
             >
               <CloseSmall size='16' fill='currentColor' />
             </div>
           )}
           <div
-            className='shrink-0 cursor-pointer hover:bg-[var(--fill-3)] p-4px rd-4px text-[color:var(--color-text-3)] hover:text-[color:var(--color-text-1)] transition-colors'
+            className='team-agent-slot__icon-button shrink-0 cursor-pointer hover:bg-[var(--fill-3)] p-4px rd-4px text-[color:var(--color-text-3)] hover:text-[color:var(--color-text-1)] transition-colors'
             onClick={() => onToggleFullscreen?.()}
           >
             {isFullscreen ? <OffScreen size='16' fill='currentColor' /> : <FullScreen size='16' fill='currentColor' />}
           </div>
         </div>
       </div>
-      <div className='relative flex flex-col flex-1 min-h-0'>
+      <div className='team-agent-slot__body relative flex flex-col flex-1 min-h-0'>
         {conversation ? (
           <TeamChatView
             conversation={conversation as TChatConversation}
@@ -363,7 +364,7 @@ const TeamPageContent: React.FC<TeamPageContentProps> = ({ team, onRenameTeam })
           </span>
         }
       >
-        <div className='relative flex h-full'>
+        <div className='team-workspace relative flex h-full'>
           {fullscreenSlotId ? (
             // Fullscreen: single agent fills the entire content area
             (() => {
@@ -387,12 +388,12 @@ const TeamPageContent: React.FC<TeamPageContentProps> = ({ team, onRenameTeam })
             <>
               {showLeftArrow && (
                 <div
-                  className='absolute left-0 top-0 bottom-0 w-48px z-20 flex items-center justify-center cursor-pointer opacity-80 hover:opacity-100 transition-opacity'
+                  className='team-scroll-control team-scroll-control--left absolute left-0 top-0 bottom-0 w-48px z-20 flex items-center justify-center cursor-pointer opacity-80 hover:opacity-100 transition-opacity'
                   style={{ background: 'linear-gradient(90deg, var(--color-bg-1) 40%, transparent)' }}
                   onClick={scrollToPrev}
                 >
                   <div
-                    className='w-32px h-32px rd-full flex items-center justify-center'
+                    className='team-scroll-control__button w-32px h-32px rd-full flex items-center justify-center'
                     style={{ background: 'rgba(0,0,0,0.5)', lineHeight: 0 }}
                   >
                     <Left size='24' fill='#fff' />
@@ -401,7 +402,7 @@ const TeamPageContent: React.FC<TeamPageContentProps> = ({ team, onRenameTeam })
               )}
               <div
                 ref={scrollContainerRef}
-                className='flex h-full w-full overflow-x-auto overflow-y-hidden [scrollbar-width:none]'
+                className='team-agent-scroller flex h-full w-full overflow-x-auto overflow-y-hidden [scrollbar-width:none]'
                 style={{ scrollSnapType: 'x proximity' }}
               >
                 {agents.map((agent) => {
@@ -415,7 +416,7 @@ const TeamPageContent: React.FC<TeamPageContentProps> = ({ team, onRenameTeam })
                       }}
                       data-slot-id={agent.slot_id}
                       data-role={isLeaderSlot ? 'leader' : 'member'}
-                      className='relative h-full border-r border-solid border-[color:var(--border-base)]'
+                      className='team-agent-column relative h-full border-r border-solid border-[color:var(--border-base)]'
                       style={{
                         // Always flex-grow to fill available space; each slot starts at 400px
                         // basis so the layout is stable, but spare room is distributed evenly
@@ -440,12 +441,12 @@ const TeamPageContent: React.FC<TeamPageContentProps> = ({ team, onRenameTeam })
               </div>
               {showRightArrow && (
                 <div
-                  className='absolute right-0 top-0 bottom-0 w-48px z-20 flex items-center justify-center cursor-pointer opacity-80 hover:opacity-100 transition-opacity'
+                  className='team-scroll-control team-scroll-control--right absolute right-0 top-0 bottom-0 w-48px z-20 flex items-center justify-center cursor-pointer opacity-80 hover:opacity-100 transition-opacity'
                   style={{ background: 'linear-gradient(270deg, var(--color-bg-1) 40%, transparent)' }}
                   onClick={scrollToNext}
                 >
                   <div
-                    className='w-32px h-32px rd-full flex items-center justify-center'
+                    className='team-scroll-control__button w-32px h-32px rd-full flex items-center justify-center'
                     style={{ background: 'rgba(0,0,0,0.5)', lineHeight: 0 }}
                   >
                     <Right size='24' fill='#fff' />

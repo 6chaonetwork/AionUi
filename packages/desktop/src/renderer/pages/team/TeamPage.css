@@ -1,0 +1,202 @@
+.team-workspace {
+  isolation: isolate;
+  background:
+    radial-gradient(
+      circle at 50% -24%,
+      color-mix(in srgb, var(--color-primary-2) 18%, transparent) 0%,
+      transparent 34%
+    ),
+    linear-gradient(180deg, color-mix(in srgb, var(--bg-2) 72%, transparent) 0%, transparent 42%), var(--bg-1);
+}
+
+.team-agent-scroller {
+  gap: 0;
+  scroll-behavior: smooth;
+}
+
+.team-agent-column {
+  border-color: color-mix(in srgb, var(--border-base) 72%, transparent) !important;
+  background: color-mix(in srgb, var(--bg-1) 88%, var(--bg-2));
+}
+
+.team-agent-slot {
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--bg-base) 32%, transparent) 0%, transparent 42%), var(--bg-1) !important;
+  box-shadow: inset 1px 0 0 color-mix(in srgb, var(--bg-base) 40%, transparent);
+}
+
+.team-agent-slot--leader {
+  border-left-color: color-mix(in srgb, var(--color-primary-6) 76%, var(--border-base)) !important;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--color-primary-1) 64%, transparent) 0%, transparent 44%),
+    var(--bg-1) !important;
+}
+
+.team-agent-slot__header {
+  border-bottom-color: color-mix(in srgb, var(--border-base) 72%, transparent) !important;
+  backdrop-filter: blur(14px);
+  box-shadow:
+    0 10px 24px color-mix(in srgb, var(--color-text-1) 5%, transparent),
+    inset 0 1px 0 color-mix(in srgb, var(--bg-base) 64%, transparent);
+}
+
+.team-agent-slot__body {
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--bg-base) 18%, transparent) 0%, transparent 30%),
+    color-mix(in srgb, var(--bg-1) 92%, var(--bg-2));
+}
+
+.team-agent-slot__icon-button {
+  border-radius: 8px !important;
+  transition:
+    background-color 0.18s ease,
+    color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.team-agent-slot__icon-button:hover {
+  transform: translateY(-1px);
+}
+
+.team-tab-bar {
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--bg-base) 38%, transparent) 0%, transparent 100%), var(--bg-2) !important;
+}
+
+.team-tab-bar__frame {
+  border-color: color-mix(in srgb, var(--border-base) 72%, transparent) !important;
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--bg-base) 66%, transparent);
+}
+
+.team-tab-item {
+  min-width: 168px;
+  border-color: color-mix(in srgb, var(--border-base) 60%, transparent) !important;
+  background: color-mix(in srgb, var(--bg-2) 88%, var(--bg-1)) !important;
+}
+
+.team-tab-item:hover {
+  background: color-mix(in srgb, var(--fill-2) 82%, var(--bg-2)) !important;
+}
+
+.team-tab-item--active {
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--color-primary-1) 82%, var(--bg-2)) 0%,
+    var(--bg-2) 100%
+  ) !important;
+  box-shadow:
+    inset 0 2px 0 var(--color-primary-6),
+    inset 0 -1px 0 color-mix(in srgb, var(--bg-base) 64%, transparent);
+}
+
+.team-tab-item--leader {
+  min-width: 184px;
+}
+
+.team-tab-item__action {
+  border-radius: 6px;
+  padding: 2px;
+}
+
+.team-tab-item__action:hover {
+  background: color-mix(in srgb, var(--fill-3) 76%, transparent);
+}
+
+.team-tab-bar__fade {
+  width: 42px !important;
+}
+
+.team-scroll-control {
+  opacity: 0.72;
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease;
+}
+
+.team-scroll-control:hover {
+  opacity: 1;
+}
+
+.team-scroll-control__button {
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--bg-base) 28%, transparent) 0%, transparent 100%),
+    color-mix(in srgb, var(--color-text-1) 62%, transparent) !important;
+  box-shadow:
+    0 10px 26px color-mix(in srgb, var(--color-text-1) 18%, transparent),
+    inset 0 1px 0 color-mix(in srgb, var(--bg-base) 24%, transparent);
+}
+
+.team-empty-state {
+  border-radius: 18px;
+  padding: 26px 24px;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--bg-base) 40%, transparent) 0%, transparent 48%),
+    color-mix(in srgb, var(--fill-1) 72%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border-base) 58%, transparent);
+  box-shadow:
+    0 22px 58px color-mix(in srgb, var(--color-text-1) 8%, transparent),
+    inset 0 1px 0 color-mix(in srgb, var(--bg-base) 66%, transparent);
+}
+
+.team-empty-state__suggestion {
+  border-color: color-mix(in srgb, var(--border-base) 50%, transparent) !important;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--bg-base) 28%, transparent) 0%, transparent 52%),
+    color-mix(in srgb, var(--fill-2) 74%, var(--bg-1)) !important;
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--bg-base) 52%, transparent);
+}
+
+.team-empty-state__suggestion:hover {
+  border-color: color-mix(in srgb, var(--color-primary-6) 22%, var(--border-base)) !important;
+  box-shadow:
+    0 10px 24px color-mix(in srgb, var(--color-text-1) 7%, transparent),
+    inset 0 1px 0 color-mix(in srgb, var(--bg-base) 58%, transparent);
+}
+
+.team-empty-state__suggestion-icon {
+  display: inline-flex;
+  width: 22px;
+  justify-content: center;
+}
+
+@keyframes team-tab-breathe {
+  0%,
+  100% {
+    box-shadow:
+      inset 0 0 0 1px color-mix(in srgb, var(--success-6) 18%, transparent),
+      0 0 0 color-mix(in srgb, var(--success-6) 0%, transparent);
+  }
+
+  50% {
+    box-shadow:
+      inset 0 0 0 1px color-mix(in srgb, var(--success-6) 36%, transparent),
+      0 0 18px color-mix(in srgb, var(--success-6) 12%, transparent);
+  }
+}
+
+@media (max-width: 767px) {
+  .team-tab-item {
+    min-width: 148px;
+  }
+
+  .team-agent-column {
+    min-width: 100% !important;
+  }
+
+  .team-empty-state {
+    max-width: calc(100vw - 48px);
+    padding: 22px 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .team-agent-slot__icon-button,
+  .team-scroll-control {
+    transition: none;
+  }
+
+  .team-agent-slot__icon-button:hover {
+    transform: none;
+  }
+}

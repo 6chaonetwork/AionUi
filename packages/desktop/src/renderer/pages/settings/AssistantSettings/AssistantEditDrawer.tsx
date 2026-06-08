@@ -11,6 +11,7 @@ import { Close, Delete, Info, Plus, Robot } from '@icon-park/react';
 import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import './AssistantEditDrawer.css';
 
 type AssistantEditDrawerProps = {
   // Drawer visibility
@@ -203,6 +204,7 @@ const AssistantEditDrawer: React.FC<AssistantEditDrawerProps> = ({
       visible={editVisible}
       placement='right'
       width={drawerWidth}
+      className='assistant-edit-drawer-shell'
       zIndex={1200}
       getPopupContainer={() => document.body}
       autoFocus={false}
@@ -246,7 +248,7 @@ const AssistantEditDrawer: React.FC<AssistantEditDrawerProps> = ({
       }
     >
       <div className='flex flex-col h-full overflow-hidden' data-testid='assistant-edit-drawer'>
-        <div className='flex flex-col flex-1 gap-16px bg-fill-2 rounded-16px p-20px overflow-y-auto'>
+        <div className='assistant-edit-drawer-surface flex flex-col flex-1 gap-16px bg-fill-2 rounded-16px p-20px overflow-y-auto'>
           {/* Builtin readonly banner — only Main Agent is editable on builtin
               assistants. The inline link drives the user to duplicate so they
               can edit the copy. */}
@@ -363,7 +365,7 @@ const AssistantEditDrawer: React.FC<AssistantEditDrawerProps> = ({
           </div>
 
           {/* Summary */}
-          <div className='flex flex-wrap items-center gap-8px p-10px rd-10px bg-fill-1'>
+          <div className='assistant-edit-summary flex flex-wrap items-center gap-8px p-10px rd-10px bg-fill-1'>
             <span className='text-12px text-t-secondary'>
               {t('settings.assistantMainAgent', { defaultValue: 'Main Agent' })}:
             </span>
@@ -396,7 +398,7 @@ const AssistantEditDrawer: React.FC<AssistantEditDrawerProps> = ({
               </Button>
             </div>
             <div
-              className='mt-10px border border-border-2 overflow-hidden rounded-4px'
+              className='assistant-rules-panel mt-10px border border-border-2 overflow-hidden rounded-4px'
               style={{ height: rulesContainerHeight }}
             >
               {isRuleEditable && (
@@ -451,7 +453,7 @@ const AssistantEditDrawer: React.FC<AssistantEditDrawerProps> = ({
 
           {/* Skills section */}
           {showSkills && (
-            <div className='flex-shrink-0 mt-16px' data-testid='skills-section'>
+            <div className='assistant-skills-section flex-shrink-0 mt-16px' data-testid='skills-section'>
               <div className='flex items-center justify-between mb-12px'>
                 <Typography.Text bold>{t('settings.assistantSkills', { defaultValue: 'Skills' })}</Typography.Text>
                 {/* Builtin readonly assistants don't expose an Add Skills entry

@@ -1,0 +1,82 @@
+.cron-task-dialog .arco-modal-content {
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--bg-base) 48%, transparent) 0%, transparent 42%),
+    var(--dialog-fill-0);
+  border: 1px solid color-mix(in srgb, var(--border-base) 78%, transparent);
+  box-shadow:
+    0 28px 76px color-mix(in srgb, var(--color-text-1) 16%, transparent),
+    inset 0 1px 0 color-mix(in srgb, var(--bg-base) 74%, transparent);
+  overflow: hidden;
+}
+
+.cron-task-dialog .arco-modal-header {
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--bg-base) 46%, transparent) 0%, transparent 100%),
+    var(--dialog-fill-0);
+  border-bottom-color: color-mix(in srgb, var(--border-base) 72%, transparent);
+}
+
+.cron-task-dialog .arco-modal-body {
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--bg-2) 40%, transparent) 0%, transparent 48%), var(--dialog-fill-0);
+}
+
+.cron-task-dialog .arco-modal-footer {
+  background: color-mix(in srgb, var(--dialog-fill-0) 92%, var(--bg-2));
+  border-top-color: color-mix(in srgb, var(--border-base) 72%, transparent);
+  box-shadow: 0 -10px 30px color-mix(in srgb, var(--color-text-1) 5%, transparent);
+}
+
+.cron-task-dialog .arco-form-label-item {
+  color: var(--text-secondary);
+}
+
+.cron-task-dialog .arco-input-inner-wrapper,
+.cron-task-dialog .arco-textarea-wrapper,
+.cron-task-dialog .arco-select-view,
+.cron-task-dialog .arco-picker {
+  border-color: color-mix(in srgb, var(--border-base) 76%, transparent) !important;
+  background-color: color-mix(in srgb, var(--bg-base) 72%, var(--bg-1)) !important;
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--bg-base) 80%, transparent);
+}
+
+.cron-task-dialog .arco-input-inner-wrapper:focus-within,
+.cron-task-dialog .arco-textarea-wrapper:focus-within,
+.cron-task-dialog .arco-select-view:focus-within,
+.cron-task-dialog .arco-picker-focused {
+  border-color: color-mix(in srgb, var(--color-primary-6) 52%, var(--border-base)) !important;
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--color-primary-6) 12%, transparent),
+    inset 0 1px 0 color-mix(in srgb, var(--bg-base) 80%, transparent);
+}
+
+.cron-task-dialog .arco-radio {
+  padding: 7px 10px;
+  border-radius: 999px;
+  transition:
+    background-color 0.18s ease,
+    color 0.18s ease;
+}
+
+.cron-task-dialog .arco-radio:hover {
+  background-color: color-mix(in srgb, var(--bg-2) 76%, transparent);
+}
+
+.cron-task-dialog .arco-radio-checked {
+  background-color: color-mix(in srgb, var(--color-primary-1) 76%, var(--bg-1));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-primary-6) 14%, transparent);
+}
+
+.cron-task-dialog .rounded-12px.border {
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--bg-base) 30%, transparent) 0%, transparent 56%),
+    color-mix(in srgb, var(--fill-2) 84%, var(--bg-1)) !important;
+  border-color: color-mix(in srgb, var(--border-base) 72%, transparent) !important;
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--bg-base) 64%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cron-task-dialog .arco-radio {
+    transition: none;
+  }
+}

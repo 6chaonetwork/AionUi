@@ -1,0 +1,115 @@
+.assistant-edit-drawer-shell .arco-drawer {
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--bg-base) 42%, transparent) 0%, transparent 34%), var(--color-bg-1);
+  border-left: 1px solid color-mix(in srgb, var(--border-base) 78%, transparent);
+  box-shadow:
+    -24px 0 70px color-mix(in srgb, var(--color-text-1) 14%, transparent),
+    inset 1px 0 0 color-mix(in srgb, var(--bg-base) 64%, transparent);
+}
+
+.assistant-edit-drawer-shell .arco-drawer-header {
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--bg-base) 42%, transparent) 0%, transparent 100%), var(--color-bg-1) !important;
+  border-bottom-color: color-mix(in srgb, var(--border-base) 72%, transparent);
+}
+
+.assistant-edit-drawer-shell .arco-drawer-body {
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--bg-2) 46%, transparent) 0%, transparent 42%), var(--color-bg-1) !important;
+}
+
+.assistant-edit-drawer-shell .arco-drawer-footer {
+  background: color-mix(in srgb, var(--color-bg-1) 92%, var(--bg-2));
+  border-top-color: color-mix(in srgb, var(--border-base) 72%, transparent);
+  box-shadow: 0 -10px 30px color-mix(in srgb, var(--color-text-1) 5%, transparent);
+}
+
+.assistant-edit-drawer-surface {
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--bg-base) 28%, transparent) 0%, transparent 38%),
+    color-mix(in srgb, var(--fill-2) 86%, var(--bg-1)) !important;
+  border: 1px solid color-mix(in srgb, var(--border-base) 72%, transparent);
+  box-shadow:
+    0 16px 44px color-mix(in srgb, var(--color-text-1) 7%, transparent),
+    inset 0 1px 0 color-mix(in srgb, var(--bg-base) 70%, transparent);
+}
+
+.assistant-edit-drawer-surface .arco-input-inner-wrapper,
+.assistant-edit-drawer-surface .arco-input-wrapper,
+.assistant-edit-drawer-surface .arco-select-view,
+.assistant-edit-drawer-surface .arco-textarea-wrapper {
+  border-color: color-mix(in srgb, var(--border-base) 76%, transparent) !important;
+  background-color: color-mix(in srgb, var(--bg-base) 70%, var(--bg-1)) !important;
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--bg-base) 76%, transparent);
+}
+
+.assistant-edit-drawer-surface .arco-input-inner-wrapper:focus-within,
+.assistant-edit-drawer-surface .arco-input-wrapper:focus-within,
+.assistant-edit-drawer-surface .arco-select-view:focus-within,
+.assistant-edit-drawer-surface .arco-textarea-wrapper:focus-within {
+  border-color: color-mix(in srgb, var(--color-primary-6) 52%, var(--border-base)) !important;
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--color-primary-6) 12%, transparent),
+    inset 0 1px 0 color-mix(in srgb, var(--bg-base) 76%, transparent);
+}
+
+.assistant-edit-summary {
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--bg-base) 38%, transparent) 0%, transparent 58%),
+    color-mix(in srgb, var(--fill-1) 82%, var(--bg-1)) !important;
+  border: 1px solid color-mix(in srgb, var(--border-base) 68%, transparent);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--bg-base) 68%, transparent);
+}
+
+.assistant-rules-panel {
+  border-color: color-mix(in srgb, var(--border-base) 76%, transparent) !important;
+  border-radius: 12px !important;
+  background-color: color-mix(in srgb, var(--bg-base) 66%, var(--bg-1));
+  box-shadow:
+    0 12px 32px color-mix(in srgb, var(--color-text-1) 6%, transparent),
+    inset 0 1px 0 color-mix(in srgb, var(--bg-base) 70%, transparent);
+}
+
+.assistant-rules-panel .arco-textarea {
+  padding: 14px !important;
+  line-height: 1.55;
+}
+
+.assistant-skills-section .arco-collapse {
+  background: transparent;
+  border: none;
+}
+
+.assistant-skills-section .arco-collapse-item {
+  margin-bottom: 10px;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--border-base) 70%, transparent) !important;
+  border-radius: 12px !important;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--bg-base) 30%, transparent) 0%, transparent 48%),
+    color-mix(in srgb, var(--fill-1) 82%, var(--bg-1)) !important;
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--bg-base) 64%, transparent);
+}
+
+.assistant-skills-section .arco-collapse-item-header {
+  border-bottom-color: color-mix(in srgb, var(--border-base) 54%, transparent) !important;
+}
+
+.assistant-skills-section .arco-collapse-item-content-box > .space-y-4px > div {
+  border: 1px solid transparent;
+  transition:
+    background-color 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.assistant-skills-section .arco-collapse-item-content-box > .space-y-4px > div:hover {
+  border-color: color-mix(in srgb, var(--border-base) 44%, transparent);
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--color-text-1) 5%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .assistant-skills-section .arco-collapse-item-content-box > .space-y-4px > div {
+    transition: none;
+  }
+}

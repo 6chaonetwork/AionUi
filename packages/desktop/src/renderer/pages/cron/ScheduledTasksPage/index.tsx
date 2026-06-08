@@ -18,6 +18,7 @@ import { useConversationAgents } from '@renderer/pages/conversation/hooks/useCon
 import CronStatusTag from './CronStatusTag';
 import CreateTaskDialog from './CreateTaskDialog';
 import { getJobAgentMeta } from './jobAgentMeta';
+import './ScheduledTasksPage.css';
 
 const ScheduledTasksPage: React.FC = () => {
   const layout = useLayoutContext();
@@ -72,17 +73,17 @@ const ScheduledTasksPage: React.FC = () => {
   return (
     <div
       className={classNames(
-        'w-full min-h-full box-border overflow-y-auto',
+        'cron-page-shell w-full min-h-full box-border overflow-y-auto',
         isMobile ? 'px-16px py-14px' : 'px-12px py-24px md:px-40px md:py-32px'
       )}
     >
       <div
         className={classNames(
-          'mx-auto flex w-full max-w-800px box-border flex-col',
+          'cron-page-content mx-auto flex w-full max-w-800px box-border flex-col',
           isMobile ? 'gap-14px' : 'gap-16px'
         )}
       >
-        <div className={classNames('flex w-full flex-col', isMobile ? 'gap-6px' : 'gap-8px')}>
+        <div className={classNames('cron-page-hero flex w-full flex-col', isMobile ? 'gap-6px' : 'gap-8px')}>
           <div className='flex w-full items-start justify-between gap-12px sm:gap-16px max-[520px]:flex-wrap'>
             <h1
               className={classNames(
@@ -106,7 +107,7 @@ const ScheduledTasksPage: React.FC = () => {
           </p>
         </div>
 
-        <div className='grid w-full box-border grid-cols-[minmax(0,1fr)_auto] items-center gap-x-12px gap-y-10px rounded-12px border border-solid border-[var(--color-border-2)] bg-fill-2 px-14px py-12px sm:rounded-14px sm:px-16px max-[520px]:grid-cols-1'>
+        <div className='cron-awake-card grid w-full box-border grid-cols-[minmax(0,1fr)_auto] items-center gap-x-12px gap-y-10px rounded-12px border border-solid border-[var(--color-border-2)] bg-fill-2 px-14px py-12px sm:rounded-14px sm:px-16px max-[520px]:grid-cols-1'>
           <span
             className={classNames(
               'min-w-0 text-t-primary',
@@ -126,11 +127,11 @@ const ScheduledTasksPage: React.FC = () => {
         </div>
 
         {loading ? (
-          <div className='flex min-h-220px items-center justify-center rounded-16px border border-dashed border-border-2 bg-fill-1'>
+          <div className='cron-state-card flex min-h-220px items-center justify-center rounded-16px border border-dashed border-border-2 bg-fill-1'>
             <Spin />
           </div>
         ) : jobs.length === 0 ? (
-          <div className='flex min-h-220px items-center justify-center rounded-16px border border-dashed border-border-2 bg-fill-1'>
+          <div className='cron-state-card flex min-h-220px items-center justify-center rounded-16px border border-dashed border-border-2 bg-fill-1'>
             <Empty description={t('cron.noTasks')} />
           </div>
         ) : (
@@ -152,7 +153,7 @@ const ScheduledTasksPage: React.FC = () => {
                 <div
                   key={job.id}
                   className={classNames(
-                    'group flex cursor-pointer flex-col border border-solid border-[var(--color-border-2)] bg-fill-1 transition-colors duration-200 hover:border-[var(--color-border-3)] hover:shadow-sm',
+                    'cron-task-card group flex cursor-pointer flex-col border border-solid border-[var(--color-border-2)] bg-fill-1 transition-colors duration-200 hover:border-[var(--color-border-3)] hover:shadow-sm',
                     isMobile ? 'rounded-12px px-16px py-16px' : 'rounded-12px px-20px py-18px'
                   )}
                   onClick={() => handleGoToDetail(job)}
@@ -189,10 +190,10 @@ const ScheduledTasksPage: React.FC = () => {
                   </div>
 
                   <div className='mt-14px flex items-center justify-between gap-10px'>
-                    <div className='min-w-0 flex items-center gap-6px text-12px leading-18px text-t-secondary'>
+                    <div className='cron-task-card__meta min-w-0 flex items-center gap-6px text-12px leading-18px text-t-secondary'>
                       {agentMeta.name ? (
                         <Tooltip content={agentMeta.name}>
-                          <div className='flex h-16px w-16px shrink-0 items-center justify-center text-t-secondary'>
+                          <div className='cron-task-card__agent flex h-16px w-16px shrink-0 items-center justify-center text-t-secondary'>
                             {agentMeta.logo ? (
                               <img
                                 src={agentMeta.logo}

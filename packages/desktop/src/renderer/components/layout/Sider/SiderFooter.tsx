@@ -55,6 +55,7 @@ const SiderFooter: React.FC<SiderFooterProps> = ({
     />
   );
   const showThemeToggle = isSettings && !collapsed;
+  const showUtilitySlot = !collapsed;
   const themeTooltip = theme === 'dark' ? t('settings.lightMode') : t('settings.darkMode');
 
   return (
@@ -64,11 +65,11 @@ const SiderFooter: React.FC<SiderFooterProps> = ({
           <div
             onClick={onSettingsClick}
             className={classNames(
-              'group h-34px flex items-center rd-0.5rem cursor-pointer transition-colors',
+              'group h-34px flex items-center rd-0.5rem cursor-pointer transition-colors sider-footer__primary',
               collapsed ? 'w-full justify-center' : 'flex-1 min-w-0 justify-start gap-8px pl-10px pr-8px',
               isMobile && 'sider-footer-btn-mobile',
               {
-                'bg-fill-3': isSettings,
+                'bg-fill-2 hover:bg-fill-3 active:bg-fill-4': isSettings,
                 'hover:bg-fill-3 active:bg-fill-4': !isSettings,
               }
             )}
@@ -104,26 +105,36 @@ const SiderFooter: React.FC<SiderFooterProps> = ({
             </div>
           </Tooltip>
         )}
-        {/* Theme toggle — lightweight icon button, only while inside Settings page (not in collapsed mode) */}
-        {showThemeToggle && (
-          <Tooltip {...siderTooltipProps} content={themeTooltip} position='right'>
-            <div
-              onClick={onThemeToggle}
-              className={classNames(
-                'h-32px w-40px shrink-0 flex items-center justify-center cursor-pointer rd-0.5rem transition-colors text-t-secondary hover:bg-fill-2 hover:text-t-primary active:bg-fill-3',
-                isMobile && 'sider-footer-btn-mobile'
-              )}
-              aria-label={themeTooltip}
-            >
-              <span className='w-28px h-28px flex items-center justify-center shrink-0'>
-                {theme === 'dark' ? (
-                  <SunOne theme='outline' size='18' fill='currentColor' className='block leading-none' />
-                ) : (
-                  <Moon theme='outline' size='18' fill='currentColor' className='block leading-none' />
-                )}
-              </span>
-            </div>
-          </Tooltip>
+        {/* Keep a stable utility slot so the footer layout stays continuous between chat and settings. */}
+        {showUtilitySlot && (
+          <div
+            className={classNames(
+              'sider-footer__utility h-32px w-40px shrink-0 flex items-center justify-center rd-0.5rem transition-all duration-180',
+              isMobile && 'sider-footer-btn-mobile',
+              {
+                'opacity-100 translate-x-0': showThemeToggle,
+                'opacity-0 translate-x-2px pointer-events-none': !showThemeToggle,
+              }
+            )}
+          >
+            {showThemeToggle && (
+              <Tooltip {...siderTooltipProps} content={themeTooltip} position='right'>
+                <div
+                  onClick={onThemeToggle}
+                  className='h-32px w-40px shrink-0 flex items-center justify-center cursor-pointer rd-0.5rem transition-colors text-t-secondary hover:bg-fill-2 hover:text-t-primary active:bg-fill-3'
+                  aria-label={themeTooltip}
+                >
+                  <span className='w-28px h-28px flex items-center justify-center shrink-0'>
+                    {theme === 'dark' ? (
+                      <SunOne theme='outline' size='18' fill='currentColor' className='block leading-none' />
+                    ) : (
+                      <Moon theme='outline' size='18' fill='currentColor' className='block leading-none' />
+                    )}
+                  </span>
+                </div>
+              </Tooltip>
+            )}
+          </div>
         )}
       </div>
     </div>

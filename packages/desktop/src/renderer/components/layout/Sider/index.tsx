@@ -158,10 +158,12 @@ const Sider: React.FC<SiderProps> = ({ onSessionClick, collapsed = false }) => {
       <div className='flex-1 min-h-0 overflow-hidden'>
         {isSettings ? (
           <Suspense fallback={<div className='size-full' />}>
-            <SettingsSider collapsed={collapsed} tooltipEnabled={tooltipEnabled} />
+            <div className='size-full sider-panel-transition sider-panel-transition--settings'>
+              <SettingsSider collapsed={collapsed} tooltipEnabled={tooltipEnabled} />
+            </div>
           </Suspense>
         ) : (
-          <div className='size-full flex flex-col gap-2px'>
+          <div className='size-full flex flex-col gap-2px sider-panel-transition sider-panel-transition--workspace'>
             <SiderToolbar
               isMobile={isMobile}
               isBatchMode={isBatchMode}
