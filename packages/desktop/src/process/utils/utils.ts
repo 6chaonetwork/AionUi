@@ -11,6 +11,13 @@ import { existsSync, lstatSync, mkdirSync, readlinkSync, realpathSync, symlinkSy
 import fs from 'fs/promises';
 import os from 'os';
 import path from 'path';
+
+export const APP_DATA_DIR_NAME = 'flyfox';
+export const LEGACY_APP_DATA_DIR_NAME = 'aionui';
+export const APP_DATA_SYMLINK_NAME = '.flyfox';
+export const LEGACY_APP_DATA_SYMLINK_NAME = '.aionui';
+export const APP_CONFIG_SYMLINK_NAME = '.flyfox-config';
+
 export const hasElectronAppPath = (): boolean => {
   return typeof process.versions.electron === 'string';
 };
@@ -29,7 +36,12 @@ const getElectronPathOrFallback = (name: 'temp' | 'home' | 'userData'): string =
 
 export const getTempPath = () => {
   const rootPath = getElectronPathOrFallback('temp');
-  return path.join(rootPath, 'aionui');
+  return path.join(rootPath, APP_DATA_DIR_NAME);
+};
+
+export const getLegacyTempPath = () => {
+  const rootPath = getElectronPathOrFallback('temp');
+  return path.join(rootPath, LEGACY_APP_DATA_DIR_NAME);
 };
 
 /**
@@ -91,26 +103,50 @@ const ensureCliSafeSymlink = (targetPath: string, symlinkName: string): string =
 
 /**
  * Get data path, using CLI-safe symlink on macOS.
- * Release builds use ~/.aionui; dev builds use ~/.aionui-dev.
+ * Release builds use ~/.flyfox; dev builds use ~/.flyfox-dev.
  * 获取数据目录路径，macOS 上使用符号链接。
- * Release 使用 ~/.aionui，Dev 模式使用 ~/.aionui-dev。
+ * Release 使用 ~/.flyfox，Dev 模式使用 ~/.flyfox-dev。
  */
 export const getDataPath = (): string => {
   const rootPath = getElectronPathOrFallback('userData');
-  const dataPath = path.join(rootPath, 'aionui');
-  return ensureCliSafeSymlink(dataPath, getEnvAwareName('.aionui'));
+  const dataPath = path.join(rootPath, APP_DATA_DIR_NAME);
+  return ensureCliSafeSymlink(dataPath, getEnvAwareName(APP_DATA_SYMLINK_NAME));
+};
+
+export const getLegacyDataPath = (): string => {
+  const rootPath = getElectronPathOrFallback('userData');
+  return path.join(rootPath, LEGACY_APP_DATA_DIR_NAME);
 };
 
 /**
  * Get config path, using CLI-safe symlink on macOS.
- * Release builds use ~/.aionui-config; dev builds use ~/.aionui-config-dev.
+ * Release builds use ~/.flyfox-config; dev builds use ~/.flyfox-config-dev.
  * 获取配置目录路径，macOS 上使用符号链接。
- * Release 使用 ~/.aionui-config，Dev 模式使用 ~/.aionui-config-dev。
+ * Release 使用 ~/.flyfox-config，Dev 模式使用 ~/.flyfox-config-dev。
  */
 export const getConfigPath = (): string => {
   const rootPath = getElectronPathOrFallback('userData');
   const configPath = path.join(rootPath, 'config');
-  return ensureCliSafeSymlink(configPath, getEnvAwareName('.aionui-config'));
+  return ensureCliSafeSymlink(configPath, getEnvAwareName(APP_CONFIG_SYMLINK_NAME));
+};
+
+const normalizePathForCompare = (value: string): string => {
+  const resolved = path.resolve(value);
+  return process.platform === 'win32' ? resolved.toLowerCase() : resolved;
+};
+
+const isSamePath = (left: string, right: string): boolean => {
+  return normalizePathForCompare(left) === normalizePathForCompare(right);
+};
+
+export const getLegacyDataSymlinkPath = (): string => {
+  const homePath = getElectronPathOrFallback('home');
+  return path.join(homePath, getEnvAwareName(LEGACY_APP_DATA_SYMLINK_NAME));
+};
+
+export const isLegacyDefaultDataPath = (inputPath?: string | null): boolean => {
+  if (!inputPath) return false;
+  return isSamePath(inputPath, getLegacyDataPath()) || isSamePath(inputPath, getLegacyDataSymlinkPath());
 };
 
 /**

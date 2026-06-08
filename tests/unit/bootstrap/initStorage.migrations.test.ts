@@ -5,6 +5,24 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+import os from 'os';
+import path from 'path';
+
+const dataRoot = path.join(os.tmpdir(), 'Flyfox-Dev');
+const tempRoot = path.join(os.tmpdir(), 'flyfox-temp');
+const homeRoot = path.join(os.tmpdir(), 'flyfox-home');
+
+vi.mock('@/common/platform', () => ({
+  getPlatformServices: () => ({
+    paths: {
+      getDataDir: () => dataRoot,
+      getTempDir: () => tempRoot,
+      getHomeDir: () => homeRoot,
+      isPackaged: () => true,
+      needsCliSafeSymlinks: () => false,
+    },
+  }),
+}));
 
 vi.mock('@office-ai/platform', () => ({
   StorageManager: class {
@@ -31,6 +49,8 @@ vi.mock('@office-ai/platform', () => ({
 describe('initStorage.migrations', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.resetModules();
+    delete process.env.AIONUI_MULTI_INSTANCE;
   });
 
   it('handles empty storage on first run', () => {
@@ -51,5 +71,22 @@ describe('initStorage.migrations', () => {
 
   it('initStorage returns valid config', () => {
     expect(true).toBe(true);
+  });
+
+  it('uses flyfox for new data and temp roots while keeping legacy helpers', async () => {
+    const { getDataPath, getLegacyDataPath, getTempPath, getLegacyTempPath } = await import('@process/utils');
+
+    expect(getDataPath()).toBe(path.join(dataRoot, 'flyfox'));
+    expect(getTempPath()).toBe(path.join(tempRoot, 'flyfox'));
+    expect(getLegacyDataPath()).toBe(path.join(dataRoot, 'aionui'));
+    expect(getLegacyTempPath()).toBe(path.join(tempRoot, 'aionui'));
+  });
+
+  it('recognizes old default work directories without flagging the Flyfox path', async () => {
+    const { getDataPath, getLegacyDataPath, isLegacyDefaultDataPath } = await import('@process/utils');
+
+    expect(isLegacyDefaultDataPath(getLegacyDataPath())).toBe(true);
+    expect(isLegacyDefaultDataPath(getDataPath())).toBe(false);
+    expect(isLegacyDefaultDataPath(path.join(dataRoot, 'custom-workspace'))).toBe(false);
   });
 });

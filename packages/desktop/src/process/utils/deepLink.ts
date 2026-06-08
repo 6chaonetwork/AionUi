@@ -7,18 +7,24 @@
 import type { BrowserWindow } from 'electron';
 import { ipcBridge } from '@/common';
 
-export const PROTOCOL_SCHEME = 'aionui';
+export const PROTOCOL_SCHEME = 'flyfox';
+export const LEGACY_PROTOCOL_SCHEME = 'aionui';
+const SUPPORTED_PROTOCOL_SCHEMES = [PROTOCOL_SCHEME, LEGACY_PROTOCOL_SCHEME];
+
+export const isSupportedDeepLinkUrl = (url: string): boolean =>
+  SUPPORTED_PROTOCOL_SCHEMES.some((scheme) => url.startsWith(`${scheme}://`));
 
 /**
- * Parse an aionui:// URL into action and params.
+ * Parse a flyfox:// URL into action and params.
+ * Legacy aionui:// links are still accepted for compatibility.
  * Supports two formats:
- *   1. aionui://add-provider?base_url=xxx&api_key=xxx
- *   2. aionui://provider/add?v=1&data=<base64 JSON>  (one-api / new-api style)
+ *   1. flyfox://add-provider?base_url=xxx&api_key=xxx
+ *   2. flyfox://provider/add?v=1&data=<base64 JSON>  (one-api / new-api style)
  */
 export const parseDeepLinkUrl = (url: string): { action: string; params: Record<string, string> } | null => {
   try {
     const parsed = new URL(url);
-    if (parsed.protocol !== `${PROTOCOL_SCHEME}:`) return null;
+    if (!SUPPORTED_PROTOCOL_SCHEMES.some((scheme) => parsed.protocol === `${scheme}:`)) return null;
 
     const hostname = parsed.hostname || '';
     const pathname = parsed.pathname.replace(/^\/+/, '');
@@ -49,7 +55,7 @@ export const parseDeepLinkUrl = (url: string): { action: string; params: Record<
 };
 
 let mainWindowRef: BrowserWindow | null = null;
-let pendingDeepLinkUrl: string | null = process.argv.find((arg) => arg.startsWith(`${PROTOCOL_SCHEME}://`)) || null;
+let pendingDeepLinkUrl: string | null = process.argv.find(isSupportedDeepLinkUrl) || null;
 
 export const setDeepLinkMainWindow = (win: BrowserWindow): void => {
   mainWindowRef = win;

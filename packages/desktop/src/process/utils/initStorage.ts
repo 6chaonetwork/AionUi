@@ -23,8 +23,10 @@ import {
   ensureDirectory,
   getConfigPath,
   getDataPath,
-  getTempPath,
+  getLegacyDataPath,
+  getLegacyTempPath,
   hasElectronAppPath,
+  isLegacyDefaultDataPath,
   verifyDirectoryFiles,
 } from './utils';
 import { runLegacyDatabaseMigrations } from '@process/services/database/runLegacyDatabaseMigrations';
@@ -55,38 +57,33 @@ const mkdirSync = (path: string) => {
   return _mkdirSync(path, { recursive: true });
 };
 
+const isDirectoryMissingOrEmpty = (dir: string): boolean => {
+  if (!existsSync(dir)) return true;
+  try {
+    return readdirSync(dir).length === 0;
+  } catch (error) {
+    console.warn('[AionUi] Warning: Could not read directory during migration check:', error);
+    return false;
+  }
+};
+
 /**
- * 迁移老版本数据从temp目录到userData/config目录
+ * Migrate early desktop config data from the old temp/aionui directory to
+ * userData/config. The temp directory keeps its legacy name for compatibility.
  */
 const migrateLegacyData = async () => {
-  const oldDir = getTempPath(); // 老的temp目录
-  const newDir = getConfigPath(); // 新的userData/config目录
+  const oldDir = getLegacyTempPath();
+  const newDir = getConfigPath();
 
   try {
-    // 检查新目录是否为空（不存在或者存在但无内容）
-    const isNewDirEmpty =
-      !existsSync(newDir) ||
-      (() => {
-        try {
-          return existsSync(newDir) && readdirSync(newDir).length === 0;
-        } catch (error) {
-          console.warn('[AionUi] Warning: Could not read new directory during migration check:', error);
-          return false; // 假设非空以避免迁移覆盖
-        }
-      })();
+    const isNewDirEmpty = isDirectoryMissingOrEmpty(newDir);
 
-    // 检查迁移条件：老目录存在且新目录为空
     if (existsSync(oldDir) && isNewDirEmpty) {
-      // 创建目标目录
       mkdirSync(newDir);
-
-      // 复制所有文件和文件夹
       await copyDirectoryRecursively(oldDir, newDir);
 
-      // 验证迁移是否成功
       const isVerified = await verifyDirectoryFiles(oldDir, newDir);
       if (isVerified) {
-        // 确保不会删除相同的目录
         if (path.resolve(oldDir) !== path.resolve(newDir)) {
           try {
             await fs.rm(oldDir, { recursive: true });
@@ -103,6 +100,36 @@ const migrateLegacyData = async () => {
   }
 
   return false;
+};
+
+/**
+ * The app was rebranded to Flyfox, but older installs may already have their
+ * backend data under `{userData}/aionui`. Copy it to `{userData}/flyfox` on
+ * first run so backend-owned folders such as `skills/` and `builtin-skills/`
+ * live under the current product name without deleting the rollback source.
+ */
+const migrateLegacyDefaultDataDir = async () => {
+  const oldDir = getLegacyDataPath();
+  const newDir = getDataPath();
+
+  try {
+    if (path.resolve(oldDir) === path.resolve(newDir)) return false;
+    if (!existsSync(oldDir) || !isDirectoryMissingOrEmpty(newDir)) return false;
+
+    mkdirSync(newDir);
+    await copyDirectoryRecursively(oldDir, newDir);
+
+    const isVerified = await verifyDirectoryFiles(oldDir, newDir);
+    if (!isVerified) {
+      console.warn('[AionUi] Flyfox data directory migration could not be fully verified:', oldDir, newDir);
+      return false;
+    }
+
+    return true;
+  } catch (error) {
+    console.error('[AionUi] Flyfox data directory migration failed:', error);
+    return false;
+  }
 };
 
 const WriteFile = async (file_path: string, data: string) => {
@@ -236,7 +263,7 @@ const JsonFileBuilder = <S extends object = Record<string, unknown>>(file_path: 
 
 const envFile = JsonFileBuilder<IEnvStorageRefer>(path.join(getHomePage(), STORAGE_PATH.env));
 
-const dirConfig = envFile.getSync('aionui.dir');
+let dirConfig = envFile.getSync('aionui.dir');
 
 const cacheDir = dirConfig?.cacheDir || getHomePage();
 
@@ -340,6 +367,21 @@ const ensureAssistantDirs = async (): Promise<void> => {
   if (!existsSync(assistantsDir)) mkdirSync(assistantsDir);
 };
 
+const ensureBackendDataDirs = (): void => {
+  const dataPath = getDataPath();
+  ensureDirectory(dataPath);
+  ensureDirectory(path.join(dataPath, STORAGE_PATH.skills));
+};
+
+const normalizeLegacyDefaultWorkDir = async (): Promise<void> => {
+  if (!dirConfig?.workDir || !isLegacyDefaultDataPath(dirConfig.workDir)) return;
+  dirConfig = {
+    ...dirConfig,
+    workDir: getDataPath(),
+  };
+  await envFile.set('aionui.dir', dirConfig);
+};
+
 const getBuiltinMcpBaseDir = (): string => {
   const mainModuleDir =
     typeof require !== 'undefined' && require.main?.filename ? path.dirname(require.main.filename) : __dirname;
@@ -368,14 +410,21 @@ const initStorage = async () => {
   const mark = (label: string) => console.log(`[AionUi:init] ${label} +${Math.round(performance.now() - t0)}ms`);
   mark('start');
 
-  // 1. 先执行数据迁移（在任何目录创建之前）
+  // 1. Run migrations before creating empty destination directories.
   await migrateLegacyData();
   mark('1. migrateLegacyData');
 
-  // 2. 创建必要的目录（迁移后再创建，确保迁移能正常进行）
+  await migrateLegacyDefaultDataDir();
+  mark('1b. migrateLegacyDefaultDataDir');
+
+  await normalizeLegacyDefaultWorkDir();
+  mark('1c. normalizeLegacyDefaultWorkDir');
+
+  // 2. Create required directories after migrations so empty destinations do not
+  // block first-run copy checks.
   // Use ensureDirectory to handle cases where a regular file blocks the path (#841)
   ensureDirectory(getHomePage());
-  ensureDirectory(getDataPath());
+  ensureBackendDataDirs();
 
   // 3. 初始化存储系统
   ConfigStorage.interceptor(configFile);

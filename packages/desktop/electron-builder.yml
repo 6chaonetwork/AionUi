@@ -1,12 +1,12 @@
-appId: com.aionui.app
-productName: AionUi
-executableName: AionUi
-copyright: Copyright © 2024 AionUi
+appId: com.flyfox.app
+productName: Flyfox
+executableName: Flyfox
+copyright: Copyright © 2026 Flyfox
 
 protocols:
-  - name: AionUi Protocol
+  - name: Flyfox Protocol
     schemes:
-      - aionui
+      - flyfox
 
 asar:
   smartUnpack: true
@@ -172,17 +172,17 @@ linux:
   icon: resources/app.png
   artifactName: ${productName}-${version}-${os}-${arch}.${ext}
   category: Utility
-  maintainer: aionui
-  vendor: aionui
+  maintainer: Flyfox
+  vendor: Flyfox
   synopsis: ${description}
   description: ${description}
   desktop:
     entry:
-      Name: AionUi
+      Name: Flyfox
       Comment: ${description}
-      Icon: aionui
+      Icon: flyfox
       Categories: Office;Utility;
-      MimeType: x-scheme-handler/aionui;
+      MimeType: x-scheme-handler/flyfox;
 
 npmRebuild: false
 buildDependenciesFromSource: false

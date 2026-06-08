@@ -1,11 +1,11 @@
 {
-  "name": "AionUi",
+  "name": "flyfox",
   "version": "2.1.13",
-  "description": "Transform your command-line AI agent into a modern, efficient AI Chat interface.",
+  "description": "Flyfox is an AI workbench for chat, agents, search, image generation, and workflow execution.",
   "keywords": [],
   "license": "Apache-2.0",
   "author": {
-    "name": "AionUi",
+    "name": "Flyfox",
     "email": "service@aionui.com"
   },
   "workspaces": [
@@ -268,5 +268,5 @@
   "patchedDependencies": {
     "7zip-bin@5.2.0": "patches/7zip-bin@5.2.0.patch"
   },
-  "productName": "AionUi"
+  "productName": "Flyfox"
 }

@@ -1,7 +1,7 @@
 {
-  "name": "AionUi",
-  "short_name": "AionUi",
-  "description": "AionUi WebUI for mobile and desktop browsers.",
+  "name": "Flyfox",
+  "short_name": "Flyfox",
+  "description": "Flyfox WebUI for desktop and mobile access.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

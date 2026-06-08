@@ -6,7 +6,10 @@
 
 export {
   getTempPath,
+  getLegacyTempPath,
   getDataPath,
+  getLegacyDataPath,
+  getLegacyDataSymlinkPath,
   getConfigPath,
   generateHashWithFullName,
   readDirectoryRecursive,
@@ -15,4 +18,5 @@ export {
   copyFilesToDirectory,
   ensureDirectory,
   resolveCliSafePath,
+  isLegacyDefaultDataPath,
 } from './utils';
