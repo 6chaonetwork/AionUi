@@ -17,8 +17,8 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 
-const GITHUB_OWNER = 'iOfficeAI';
-const GITHUB_REPO = 'AionCore';
+const DEFAULT_GITHUB_OWNER = 'iOfficeAI';
+const DEFAULT_GITHUB_REPO = 'AionCore';
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -80,6 +80,13 @@ function prepareManagedResources(binaryPath, targetDir) {
 // Source resolvers
 // ---------------------------------------------------------------------------
 
+function getAioncoreReleaseRepo() {
+  return {
+    owner: process.env.AIONCORE_GITHUB_OWNER || DEFAULT_GITHUB_OWNER,
+    repo: process.env.AIONCORE_GITHUB_REPO || DEFAULT_GITHUB_REPO,
+  };
+}
+
 /**
  * Resolve the actual version tag when "latest" is requested.
  * Uses GitHub API via `gh` CLI (needs GH_TOKEN in CI) or falls back to
@@ -87,10 +94,11 @@ function prepareManagedResources(binaryPath, targetDir) {
  */
 function resolveLatestTag() {
   const token = process.env.GH_TOKEN || process.env.GITHUB_TOKEN || '';
+  const { owner, repo } = getAioncoreReleaseRepo();
 
   // 1. Try gh CLI (honours GH_TOKEN automatically)
   try {
-    const out = execSync(`gh api repos/${GITHUB_OWNER}/${GITHUB_REPO}/releases/latest --jq .tag_name`, {
+    const out = execSync(`gh api repos/${owner}/${repo}/releases/latest --jq .tag_name`, {
       encoding: 'utf-8',
       timeout: 15000,
     }).trim();
@@ -102,7 +110,7 @@ function resolveLatestTag() {
   // 2. Curl with optional token to avoid rate-limit 403
   try {
     const authArgs = token ? ['-H', `Authorization: token ${token}`] : [];
-    const args = ['-fsSL', ...authArgs, `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/releases/latest`];
+    const args = ['-fsSL', ...authArgs, `https://api.github.com/repos/${owner}/${repo}/releases/latest`];
     const out = execFileSync('curl', args, { encoding: 'utf-8', timeout: 15000 });
     const tag = JSON.parse(out).tag_name;
     if (tag) return tag;
@@ -134,7 +142,8 @@ function getAssetName(platform, arch, tag) {
 }
 
 function getDownloadUrl(assetName, tag) {
-  return `https://github.com/${GITHUB_OWNER}/${GITHUB_REPO}/releases/download/${tag}/${assetName}`;
+  const { owner, repo } = getAioncoreReleaseRepo();
+  return `https://github.com/${owner}/${repo}/releases/download/${tag}/${assetName}`;
 }
 
 function downloadFile(url, outputPath) {
@@ -297,4 +306,4 @@ function prepareAioncore(options) {
   throw new Error(`aioncore binary not found for ${runtimeKey} (tag: ${tag})`);
 }
 
-module.exports = { prepareAioncore };
+module.exports = { getAioncoreReleaseRepo, getDownloadUrl, prepareAioncore };
