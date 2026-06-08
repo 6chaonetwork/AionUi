@@ -31,6 +31,7 @@ export default defineConfig({
             'tests/unit/**/test_*.ts',
             'tests/integration/**/*.test.ts',
             'tests/regression/**/*.test.ts',
+            'packages/desktop/src/process/backend/binaryResolver.test.ts',
           ],
           exclude: ['tests/unit/**/*.dom.test.ts', 'tests/unit/**/*.dom.test.tsx'],
           setupFiles: ['./tests/vitest.setup.ts'],

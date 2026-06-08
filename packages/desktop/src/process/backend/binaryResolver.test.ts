@@ -36,6 +36,23 @@ describe('resolveBinaryPath', () => {
 
   afterEach(() => {
     setResourcesPath(originalResourcesPath);
+    vi.restoreAllMocks();
+  });
+
+  it('resolves aioncore from repo resources during local development', () => {
+    const resourcesPath = '/electron/resources';
+    const repoRoot = '/repo';
+    const runtimeKey = `${process.platform}-${process.arch}`;
+    const binaryName = process.platform === 'win32' ? 'aioncore.exe' : 'aioncore';
+    const devCandidate = join(repoRoot, 'resources', 'bundled-aioncore', runtimeKey, binaryName);
+
+    setResourcesPath(resourcesPath);
+    vi.spyOn(process, 'cwd').mockReturnValue(repoRoot);
+    vi.mocked(existsSync).mockImplementation((path) => path === devCandidate);
+    vi.mocked(readdirSync).mockReturnValue([]);
+
+    expect(resolveBinaryPath()).toBe(devCandidate);
+    expect(execSync).not.toHaveBeenCalled();
   });
 
   it('attaches bundled path diagnostics when aioncore cannot be resolved', () => {

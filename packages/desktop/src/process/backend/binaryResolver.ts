@@ -3,7 +3,8 @@
  *
  * Search order:
  *  1. Bundled with app (production)
- *  2. System PATH
+ *  2. Repo resources (development)
+ *  3. System PATH
  */
 
 import { existsSync, readdirSync } from 'node:fs';
@@ -76,6 +77,9 @@ export function resolveBinaryPath(): string {
   const bundled = bundledPath(runtimeKey, binaryName, diagnostics);
   if (bundled) return bundled;
 
+  const devBundled = devBundledPath(runtimeKey, binaryName, diagnostics);
+  if (devBundled) return devBundled;
+
   const fromPath = resolveFromSystemPATH(diagnostics);
   if (fromPath) return fromPath;
 
@@ -109,6 +113,34 @@ function bundledPath(
 
   if (existsSync(candidate)) return candidate;
   return null;
+}
+
+/**
+ * Development-only fallback: resolve from the repo-root resources directory.
+ * In packaged builds, electron-builder copies bundled-aioncore into
+ * process.resourcesPath. During local dev, the binary lives under
+ * <repo>/resources/bundled-aioncore.
+ */
+function devBundledPath(
+  runtimeKey: string,
+  binaryName: string,
+  diagnostics: BackendBinaryResolveDiagnostics
+): string | null {
+  const devResourcesPath = join(process.cwd(), 'resources');
+  const bundledDir = join(devResourcesPath, 'bundled-aioncore');
+  const runtimeDir = join(bundledDir, runtimeKey);
+  const candidate = join(runtimeDir, binaryName);
+
+  if (!existsSync(candidate)) return null;
+
+  diagnostics.resourcesPath = diagnostics.resourcesPath ?? devResourcesPath;
+  diagnostics.checkedBundledPath = candidate;
+  diagnostics.bundledDirExists = existsSync(bundledDir);
+  diagnostics.runtimeDirExists = existsSync(runtimeDir);
+  diagnostics.resourcesDirEntries = diagnostics.resourcesDirEntries ?? listDirEntries(devResourcesPath);
+  diagnostics.runtimeDirEntries = diagnostics.runtimeDirEntries ?? listDirEntries(runtimeDir);
+
+  return candidate;
 }
 
 /**
